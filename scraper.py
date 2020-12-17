@@ -1,9 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 
-URL = 'https://enen.wbijam.pl/druga_seria.html'
+URL = 'https://snk.wbijam.pl/czwarta_seria.html'
 baseURL = URL.split('wbijam.pl/', 1)[0] + 'wbijam.pl/'
-player = 'mega' # mega vk sibnet cda vidlox mp4up 
+# mega vk sibnet cda vidlox mp4up 
+player = 'mega'
 page = requests.get(URL)
 filename = "test.txt"
 
@@ -15,28 +16,34 @@ def get_episode_page_url(page):
         for a in link.find_all('a', href=True):
             links.append(baseURL + a['href'])
     links.reverse()
+    # print(links)
     return links
 
 
 def get_player_page_url(links, player_name):
     urls = []
-    for link in links:
-        page = requests.get(link)
-        soup = BeautifulSoup(page.content, 'html.parser')
-        players = soup.find('table', class_='lista')
-        player = players.find('td', text=player_name).find_parent('tr')
-        playerURL = baseURL + 'odtwarzacz-' + \
-            player.find('span', class_='odtwarzacz_link')['rel'] + '.html'
-        urls.append(playerURL)
+    if len(links) > 0 and player_name:
+        for link in links:
+            page = requests.get(link)
+            soup = BeautifulSoup(page.content, 'html.parser')
+            players = soup.find('table', class_='lista')
+            player = players.find('td', text=player_name)
+            if player is not None:
+                player = player.find_parent('tr')
+                playerURL = baseURL + 'odtwarzacz-' + \
+                    player.find('span', class_='odtwarzacz_link')['rel'] + '.html'
+                urls.append(playerURL)
+        # print(urls)
     return urls
 
 
 def get_player_url(links):
     urls = []
-    for link in links:
-        page = requests.get(link)
-        soup = BeautifulSoup(page.content, 'html.parser')
-        urls.append(soup.find('iframe')['src'])
+    if len(links) > 0:
+        for link in links:
+            page = requests.get(link)
+            soup = BeautifulSoup(page.content, 'html.parser')
+            urls.append(soup.find('iframe')['src'])
     return urls
 
 
