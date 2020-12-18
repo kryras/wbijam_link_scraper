@@ -2,8 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 
 URL = 'https://snk.wbijam.pl/czwarta_seria.html'
-baseURL = URL.split('wbijam.pl/', 1)[0] + 'wbijam.pl/'
-# mega vk sibnet cda vidlox mp4up 
+baseURL = f"{URL.split('wbijam.pl/', 1)[0]}wbijam.pl/"
+# mega vk sibnet cda vidlox mp4up
 player = 'mega'
 page = requests.get(URL)
 filename = "test.txt"
@@ -30,8 +30,7 @@ def get_player_page_url(links, player_name):
             player = players.find('td', text=player_name)
             if player is not None:
                 player = player.find_parent('tr')
-                playerURL = baseURL + 'odtwarzacz-' + \
-                    player.find('span', class_='odtwarzacz_link')['rel'] + '.html'
+                playerURL = f"{baseURL}odtwarzacz-{player.find('span', class_='odtwarzacz_link')['rel']}.html"
                 urls.append(playerURL)
         # print(urls)
     return urls
