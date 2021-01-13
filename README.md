@@ -1,2 +1,2 @@
 # wbijam_link_scraper
-Python script to obtain players links from wbijam.pl chosen series
+Python script to obtain video player links from wbijam.pl chosen series
